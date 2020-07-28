@@ -6,6 +6,21 @@ const getItems = () => {
     fetch(itemURL)
     .then(response => response.json())
     .then(items => {
+        renderItems(items)
+    })
+}
+
+const renderItems = (items) => {
+    const div = document.querySelector('.game-div');
+    document.querySelectorAll('img').forEach(e=>e.remove())
+    //console.log(item.room_id, parseInt(div.id, 10))
+    items.forEach(item => {
+        const img = document.createElement('img');
+        img.src = item.img_url
+        img.id = item.name
+        if (item.room_id === parseInt(div.id, 10)) {
+            div.appendChild(img)
+        }
     })
 }
 
@@ -14,6 +29,7 @@ const getRooms = () => {
     .then(response => response.json())
     .then(rooms => {
         renderRoom(rooms[roomNumber])
+        getItems()
         const arrows = document.querySelectorAll(".arrow")
         arrows.forEach(arrow => arrowEventLister(arrow, rooms))
     })
@@ -28,12 +44,11 @@ const arrowEventLister = (arrow, rooms) => {
     }),
     arrow.addEventListener("click", (e) => {
         if (e.target.className === "arrow right"){
-            if (roomNumber < 3) {
+            if (roomNumber < 2) {
                 roomNumber ++
                 renderRoom(rooms[roomNumber])
             }
-        }
-        else if (e.target.className === "arrow left"){
+        } else if (e.target.className === "arrow left"){
             if (roomNumber > 0) {
                 roomNumber --
                 renderRoom(rooms[roomNumber])
@@ -44,10 +59,10 @@ const arrowEventLister = (arrow, rooms) => {
 
 const renderRoom = room => {
     const div = document.querySelector('.game-div')
-    div.id = room.name
+    div.id = room.id
+    div.setAttribute('data-name', room.name)
     div.style.backgroundImage = `url('${room.img_url}')`
-
-
+    getItems()
 }
 
 const getAdvItems = () => {
@@ -80,7 +95,6 @@ const getInvetory = () => {
 
 const main = () => {
     getRooms()
-    getItems()
     getAdvItems()
     getRecs()
     getChar()
