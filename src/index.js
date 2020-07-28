@@ -11,7 +11,7 @@ const getItems = () => {
 }
 
 const renderItems = (items) => {
-    const div = document.querySelector('.game-div');
+    const div = document.querySelector('.img-div');
     document.querySelectorAll('img').forEach(e=>e.remove())
     //console.log(item.room_id, parseInt(div.id, 10))
     items.forEach(item => {
@@ -59,7 +59,9 @@ const arrowEventLister = (arrow, rooms) => {
 
 const renderRoom = room => {
     const div = document.querySelector('.game-div')
+    const imgDiv = document.querySelector('.img-div')
     div.id = room.id
+    imgDiv.id = room.id
     div.setAttribute('data-name', room.name)
     div.style.backgroundImage = `url('${room.img_url}')`
     getItems()

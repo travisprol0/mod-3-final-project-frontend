@@ -9,6 +9,12 @@
     position: relative;
 }
 
+.img-div {
+    width: 800px;
+    height: 600px;
+    position: absolute;
+}
+
 .inventory-div {
     width: 800px;
     height: 100px;
@@ -17,6 +23,7 @@
     border-color: black;
     position: absolute;
     bottom: 0em;
+    background-color: white;
 }
 
 .item {
@@ -65,4 +72,46 @@ body {
 img {
     height: 75px;
     width: auto;
+    float: right;
+}
+
+img#String {
+    position: absolute;
+    bottom: 125px;
+    right: 75px;
+}
+
+img#Matches {
+    position: absolute;
+    bottom: 200px;
+    left: 200px;
+}
+
+img#Gold {
+    position: absolute;
+    bottom: 125px;
+    right: 300px;
+}
+
+img#Stick {
+    position: absolute;
+    bottom: 200px;
+    left: 120px;
+    transform: rotate(180deg);
+}
+
+img#Hammer {
+    position: absolute;
+    top: 125px;
+    left: 275px;
+    transform: rotate(-10deg);
+}
+
+img#Rod {
+    width: 300px;
+    height: auto;
+    position: absolute;
+    left: -4px;
+    bottom: 20px;
+    transform: rotate(60deg);
 }
