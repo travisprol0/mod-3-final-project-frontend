@@ -9,11 +9,9 @@ const getItems = () => {
     })
 }
 
-
-
-
 const main = () => {
     getItems()
 }
+
 
 document.addEventListener('DOMContentLoaded', main)
