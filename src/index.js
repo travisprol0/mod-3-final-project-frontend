@@ -18,10 +18,36 @@ const renderItems = (items) => {
         const img = document.createElement('img');
         img.src = item.img_url
         img.id = item.name
+        img.dataset.id = item.id
         if (item.room_id === parseInt(div.id, 10)) {
             div.appendChild(img)
         }
     })
+    getInvetory()
+}
+
+const itemClickHandler = inventory => {
+    const imgs = document.querySelectorAll('img')
+    imgs.forEach(img => {
+        img.addEventListener('click', (e) => {
+            object = {inventory_id: inventory.id}
+            console.log(e.target.getAttribute('data-id'));
+            fetch(itemURL + '/' + e.target.getAttribute('data-id'), {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify (object)
+            })
+            img.remove()
+            renderInventory(inventory)
+        })
+    })
+}
+
+const renderInventory = inventory => {
+    invDiv = document.querySelector('.inventory-div')
 }
 
 const getRooms = () => {
@@ -92,6 +118,8 @@ const getInvetory = () => {
     fetch(invURL)
     .then(response => response.json())
     .then(inventory => {
+        itemClickHandler(inventory)
+        renderInventory(inventory)
     })
 }
 
@@ -100,7 +128,6 @@ const main = () => {
     getAdvItems()
     getRecs()
     getChar()
-    getInvetory()
 }
 
 
