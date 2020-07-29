@@ -43,13 +43,13 @@ const getInventory = () => {
     .then(inventory => {
         itemClickHandler(inventory)
         renderInventory(inventory)        
-    })
+    })        
 }
 const getInventoryNoClick = () => {
     fetch(invURL)
     .then(response => response.json())
     .then(inventory => {
-        renderInventory(inventory)        
+        renderInventory(inventory)
     })
 }
 
@@ -58,7 +58,6 @@ const itemClickHandler = inventory => {
     imgs.forEach(img => {
         img.addEventListener('click', (e) => {
             object = {inventory_id: inventory.id}
-            //console.log(e.target.getAttribute('data-id'));
             fetch(itemURL + '/' + e.target.getAttribute('data-id'), {
                 method: "PATCH",
                 headers: {
@@ -77,20 +76,42 @@ const itemClickHandler = inventory => {
     })
 }
 
+const invClickHandler = () => {
+    const imgs = document.querySelectorAll('.item img')
+    imgs.forEach(img => {
+        img.addEventListener('click', (e) => {
+
+        })
+    })
+}
+
+
+
 const renderInventory = inventory => {
     invDiv = document.querySelector('.inventory-div')
-    itemsDivs = invDiv.children
-    for (let i = 0; i < itemsDivs.length; i++) {
-        itemsDivs[i].innerHTML = "";
-    }
-    //console.log(itemsDivs)
     items = inventory.items
+    itemsDivs = invDiv.children 
+    console.log(inventory.items[0])
+    
+    for (let i = 0; i < itemsDivs.length; i++) {
+        if (items[i]){
+                itemsDivs[i].innerHTML = `
+                <div class="dropup-content">
+                    <p id=${items[i].id}>throw away</p>
+                    <p id=${items[i].id}>combine</p>
+                </div>
+            `;
+        }
+    }
+
     for (let i = 0; i < items.length; i++) {
         img = document.createElement('img')
         img.src = items[i].img_url
         img.id = items[i].id
+        itemsDivs[i].className = 'item'
         itemsDivs[i].appendChild(img);
     }
+    invClickHandler()
 }
 
 const getRooms = () => {
@@ -98,7 +119,6 @@ const getRooms = () => {
     .then(response => response.json())
     .then(rooms => {
         renderRoom(rooms[roomNumber])
-        getItems()
         const arrows = document.querySelectorAll(".arrow")
         arrows.forEach(arrow => arrowEventLister(arrow, rooms))
         
