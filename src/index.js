@@ -19,19 +19,46 @@ const renderItems = (items) => {
         img.src = item.img_url
         img.id = item.name
         img.dataset.id = item.id
-        if (item.room_id === parseInt(div.id, 10)) {
-            div.appendChild(img)
-        }
+        //quickly get the inventory here to make sure the item isn't in there
+        inventoryCheck(item, div, img)
     })
-    getInvetory()
+    getInventory()
+}
+
+//this is different from getInventory, I swear
+const inventoryCheck = (item, div, img) => {
+    fetch(invURL)
+    .then(response => response.json())
+    .then(inventory => {
+        if (item.room_id === parseInt(div.id, 10)&&(item.inventory_id != inventory.id)) {
+            div.appendChild(img)
+        }          
+    })
+}
+
+//the proper inventory get here
+const getInventory = () => {
+    fetch(invURL)
+    .then(response => response.json())
+    .then(inventory => {
+        itemClickHandler(inventory)
+        renderInventory(inventory)        
+    })
+}
+const getInventoryNoClick = () => {
+    fetch(invURL)
+    .then(response => response.json())
+    .then(inventory => {
+        renderInventory(inventory)        
+    })
 }
 
 const itemClickHandler = inventory => {
-    const imgs = document.querySelectorAll('img')
+    const imgs = document.querySelectorAll('.game-div img') //img that are direct children of .game-div
     imgs.forEach(img => {
         img.addEventListener('click', (e) => {
             object = {inventory_id: inventory.id}
-            console.log(e.target.getAttribute('data-id'));
+            //console.log(e.target.getAttribute('data-id'));
             fetch(itemURL + '/' + e.target.getAttribute('data-id'), {
                 method: "PATCH",
                 headers: {
@@ -40,14 +67,30 @@ const itemClickHandler = inventory => {
                 },
                 body: JSON.stringify (object)
             })
-            img.remove()
-            renderInventory(inventory)
+            .then(response => response.json())
+            .then(item => {
+                img.remove()
+                //can't just render inventory with the same inventory object again, but don't want more event listeners for the same stuff
+                getInventoryNoClick()
+            })
         })
     })
 }
 
 const renderInventory = inventory => {
     invDiv = document.querySelector('.inventory-div')
+    itemsDivs = invDiv.children
+    for (let i = 0; i < itemsDivs.length; i++) {
+        itemsDivs[i].innerHTML = "";
+    }
+    //console.log(itemsDivs)
+    items = inventory.items
+    for (let i = 0; i < items.length; i++) {
+        img = document.createElement('img')
+        img.src = items[i].img_url
+        img.id = items[i].id
+        itemsDivs[i].appendChild(img);
+    }
 }
 
 const getRooms = () => {
@@ -58,6 +101,7 @@ const getRooms = () => {
         getItems()
         const arrows = document.querySelectorAll(".arrow")
         arrows.forEach(arrow => arrowEventLister(arrow, rooms))
+        
     })
 }
 
@@ -114,14 +158,6 @@ const getRecs = () => {
     })
 }
 
-const getInvetory = () => {
-    fetch(invURL)
-    .then(response => response.json())
-    .then(inventory => {
-        itemClickHandler(inventory)
-        renderInventory(inventory)
-    })
-}
 
 const main = () => {
     getRooms()
