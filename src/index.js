@@ -76,16 +76,45 @@ const itemClickHandler = inventory => {
     })
 }
 
-const invClickHandler = () => {
-    const imgs = document.querySelectorAll('.item img')
-    imgs.forEach(img => {
-        img.addEventListener('click', (e) => {
-
+const invClickHandler = (inventory) => {
+    const menu = document.querySelectorAll('.menu')
+    menu.forEach(clicky => {
+        clicky.addEventListener('click', e => {
+            switch (e.target.innerText) {
+                case 'throw away':
+                    console.log(e.target.id)
+                    object = {inventory_id: inventory.id+1}
+                    fetch(itemURL+'/'+e.target.id, {
+                        method: "PATCH",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json"
+                        },
+                        body: JSON.stringify (object)
+                    })
+                    .then(response => response.json())
+                    .then(item => {
+                        renderRoomByID(item.room_id)
+                        getInventoryNoClick()
+                    })
+                    break;
+            }
         })
     })
 }
 
-
+const renderRoomByID = (id) => {
+    fetch(roomURL)
+    .then(response => response.json())
+    .then(rooms => {
+        for (let i=0; i<rooms.length; i++){
+            if(parseInt(rooms[i].id, 10) == id){
+                roomNumber = i
+                renderRoom(rooms[i])
+            }
+        }
+    })
+}
 
 const renderInventory = inventory => {
     invDiv = document.querySelector('.inventory-div')
@@ -97,10 +126,12 @@ const renderInventory = inventory => {
         if (items[i]){
                 itemsDivs[i].innerHTML = `
                 <div class="dropup-content">
-                    <p id=${items[i].id}>throw away</p>
-                    <p id=${items[i].id}>combine</p>
+                    <p class='menu' id=${items[i].id}>throw away</p>
+                    <p class='menu' id=${items[i].id}>combine</p>
                 </div>
             `;
+        } else {
+            itemsDivs[i].innerHTML = ''
         }
     }
 
@@ -111,7 +142,7 @@ const renderInventory = inventory => {
         itemsDivs[i].className = 'item'
         itemsDivs[i].appendChild(img);
     }
-    invClickHandler()
+    invClickHandler(inventory)
 }
 
 const getRooms = () => {
