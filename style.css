@@ -158,3 +158,27 @@ img#Rod {
 .item:hover .dropup-content {
     display: block;
 }
+
+.character {
+    height: 200px;
+    width: auto;
+    position: absolute;
+    bottom: 100px;
+    left: 300px;
+}
+
+.text-div {
+    position: absolute;
+    bottom: 175px;
+    left: 475px;
+    background-image: url('images/speech-bubble.png');
+    height: 256px;
+    width: 256px;
+}
+
+.text {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    position: absolute;
+    bottom: 128px;
+    left: 25px;
+}

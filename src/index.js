@@ -13,7 +13,6 @@ const getItems = () => {
 const renderItems = (items) => {
     const div = document.querySelector('.img-div');
     document.querySelectorAll('img').forEach(e=>e.remove())
-    //console.log(item.room_id, parseInt(div.id, 10))
     items.forEach(item => {
         const img = document.createElement('img');
         img.src = item.img_url
@@ -71,9 +70,38 @@ const itemClickHandler = inventory => {
                 img.remove()
                 //can't just render inventory with the same inventory object again, but don't want more event listeners for the same stuff
                 getInventoryNoClick()
+                pickupMessage(item)
             })
         })
     })
+}
+
+const pickupMessage = item => {
+    const div = document.querySelector('.game-div')
+    const textDiv = document.createElement('div')
+    textDiv.className = 'text-div'
+    const p = document.createElement('p')
+    p.className = 'text'
+    if (item.name === "Stick" || item.name === "Hammer" || item.name === "Rod"){
+        p.textContent = `I picked up a ${item.name.toLowerCase()}`
+    } else {
+        p.textContent = `I picked up ${item.name.toLowerCase()}`
+    }
+    textDiv.append(p)
+    div.append(textDiv)
+    setTimeout(function(){ p.remove(); textDiv.remove() }, 2500);
+}
+
+const throwAwayMessage = () => {
+    const div = document.querySelector('.game-div')
+    const textDiv = document.createElement('div')
+    textDiv.className = 'text-div'
+    const p = document.createElement('p')
+    p.className = 'text'
+    p.textContent = "I don't need this anymore!"
+    textDiv.append(p)
+    div.append(textDiv)
+    setTimeout(function(){ p.remove(); textDiv.remove() }, 2500);
 }
 
 const invClickHandler = (inventory) => {
@@ -82,7 +110,6 @@ const invClickHandler = (inventory) => {
         clicky.addEventListener('click', e => {
             switch (e.target.innerText) {
                 case 'throw away':
-                    console.log(e.target.id)
                     object = {inventory_id: inventory.id+1}
                     fetch(itemURL+'/'+e.target.id, {
                         method: "PATCH",
@@ -96,6 +123,7 @@ const invClickHandler = (inventory) => {
                     .then(item => {
                         renderRoomByID(item.room_id)
                         getInventoryNoClick()
+                        throwAwayMessage()
                     })
                     break;
             }
@@ -113,14 +141,14 @@ const renderRoomByID = (id) => {
                 renderRoom(rooms[i])
             }
         }
+        getChar()
     })
 }
 
 const renderInventory = inventory => {
     invDiv = document.querySelector('.inventory-div')
     items = inventory.items
-    itemsDivs = invDiv.children 
-    console.log(inventory.items[0])
+    itemsDivs = invDiv.children
     
     for (let i = 0; i < itemsDivs.length; i++) {
         if (items[i]){
@@ -186,6 +214,7 @@ const renderRoom = room => {
     div.setAttribute('data-name', room.name)
     div.style.backgroundImage = `url('${room.img_url}')`
     getItems()
+    getChar()
 }
 
 const getAdvItems = () => {
@@ -198,8 +227,20 @@ const getAdvItems = () => {
 const getChar = () => {
     fetch(charURL)
     .then(response => response.json())
-    .then(char => {
+    .then(character => {
+        renderChar(character)
     })
+}
+
+const renderChar = character => {
+    const gameDiv = document.querySelector('.game-div')
+
+    const img = document.createElement('img');
+    img.src = character.img_url
+    img.id = character.name
+    img.className = 'character'
+    img.dataset.id = character.id
+    gameDiv.append(img)
 }
 
 const getRecs = () => {
@@ -214,7 +255,6 @@ const main = () => {
     getRooms()
     getAdvItems()
     getRecs()
-    getChar()
 }
 
 
