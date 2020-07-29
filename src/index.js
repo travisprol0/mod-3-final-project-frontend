@@ -92,14 +92,18 @@ const pickupMessage = item => {
     setTimeout(function(){ p.remove(); textDiv.remove() }, 2500);
 }
 
-const throwAwayMessage = () => {
+const throwAwayMessage = item => {
     const div = document.querySelector('.game-div')
     const textDiv = document.createElement('div')
     textDiv.className = 'text-div'
     const p = document.createElement('p')
     p.className = 'text'
-    p.textContent = "I don't need this anymore!"
-    textDiv.append(p)
+    if (item.name === "Matches") {
+        p.textContent = `I don't need these ${item.name.toLowerCase()} anymore!`
+    } else {
+        p.textContent = `I don't need this ${item.name.toLowerCase()} anymore!`
+    }
+        textDiv.append(p)
     div.append(textDiv)
     setTimeout(function(){ p.remove(); textDiv.remove() }, 2500);
 }
@@ -123,7 +127,7 @@ const invClickHandler = (inventory) => {
                     .then(item => {
                         renderRoomByID(item.room_id)
                         getInventoryNoClick()
-                        throwAwayMessage()
+                        throwAwayMessage(item)
                     })
                     break;
             }
