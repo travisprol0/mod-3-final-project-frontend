@@ -57,7 +57,9 @@ const itemClickHandler = inventory => {
     imgs.forEach(img => {
         img.addEventListener('click', (e) => {
             object = {inventory_id: inventory.id}
+            console.log(e.target.getAttribute('data-id'))
             fetch(itemURL + '/' + e.target.getAttribute('data-id'), {
+
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -171,6 +173,7 @@ const renderInventory = inventory => {
         img = document.createElement('img')
         img.src = items[i].img_url
         img.id = items[i].id
+        img.dataset.name = items[i].name
         itemsDivs[i].className = 'item'
         itemsDivs[i].appendChild(img);
     }

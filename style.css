@@ -23,19 +23,17 @@
     border-color: black;
     position: absolute;
     bottom: 0em;
-    background-color: white;
 }
 
 .item {
     height: 100px;
     float: left;
-    width: 132.3;
-    border-right: thin;
-    border-style: none solid none none;
+    width: 133.3;
     margin: 0em;
     padding: 0em;
     position: relative;
     display: inline-block;
+    background-image: url('/mod-3-final-project-frontend/images/invFrame.png');
 }
 
 .no-item {
@@ -48,7 +46,9 @@
     padding: 0em;
     position: relative;
     display: inline-block;
+    background-image: url('/mod-3-final-project-frontend/images/invFrame.png');
 }
+
 .inventory-div:after {
     content: "";
     display: table;
@@ -120,9 +120,9 @@ img#Stick {
 
 img#Hammer {
     position: absolute;
-    top: 125px;
+    top: -5px;
     left: 275px;
-    transform: rotate(-10deg);
+    transform: rotate(-5deg);
 }
 
 img#Rod {
@@ -142,7 +142,7 @@ img#Rod {
     width: inherit;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
-  }
+}
 
 .dropup-content p {
     color: black;
@@ -160,7 +160,7 @@ img#Rod {
 }
 
 .character {
-    height: 200px;
+    height: 400px;
     width: auto;
     position: absolute;
     bottom: 100px;
@@ -169,16 +169,31 @@ img#Rod {
 
 .text-div {
     position: absolute;
-    bottom: 175px;
+    bottom: 400px;
     left: 475px;
-    background-image: url('images/speech-bubble.png');
-    height: 256px;
+    background-image: url('/mod-3-final-project-frontend/images/speech-bubble.png');
+    height: 128px;
     width: 256px;
 }
 
 .text {
     font-family: "Comic Sans MS", cursive, sans-serif;
     position: absolute;
-    bottom: 128px;
+    top: 20px;
     left: 25px;
+}
+
+[data-name='String'] {
+    width: 50px;
+    height: auto;
+}
+
+.item img {
+    height: auto;
+    max-width: 100px;
+    max-height: 90px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    display: block;
 }
