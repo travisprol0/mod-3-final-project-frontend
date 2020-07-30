@@ -423,42 +423,24 @@ const getAdvItems = (itemId, inventory, itemOne, itemTwo) => {
         body: JSON.stringify(object)
     })
     .then(response => response.json())
-    .then(advItm => {removeFirstItemFromInventory(itemOne, itemTwo, inventory)})
+    .then(response => deleteItems(itemOne, itemTwo))
 }
 
-const removeFirstItemFromInventory = (itemOne, itemTwo, inventory) => {
+const deleteItems = (itemOne, itemTwo) => {
+    items = {itemOne, itemTwo}
+    const itemOneId = itemOne.id
+    const itemTwoId = itemTwo.id
     
-    const itemOneId = (parseInt(itemOne.id, 10))
-    const itemOneRoomId = parseInt(itemOne.getAttribute('data-room'), 10)
-    const itemOneObject = {inventory_id: inventory.id + 1, room_id: itemOneRoomId + 3}
-    
-    fetch(itemURL + '/' + itemOneId, {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        },
-        body: JSON.stringify(itemOneObject)
-    })
-    .then(response => response.json())
-    .then(item => {removeSecondItemFromInventory(itemTwo, inventory)})
+    fetchDeleteItems(itemOneId)
+    fetchDeleteItems(itemTwoId)
 }
 
-const removeSecondItemFromInventory = (itemTwo, inventory) => {
-    const itemTwoId = (parseInt(itemTwo.id, 0))
-    const itemTwoRoomId = parseInt(itemTwo.getAttribute('data-room'), 10)
-    const itemTwoObject = {inventory_id: inventory.id + 1, room_id: itemTwoRoomId + 3}
-
-    fetch(itemURL + '/' + itemTwoId, {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        },
-        body: JSON.stringify(itemTwoObject)
+const fetchDeleteItems = (itemId) => {
+    fetch(itemURL + '/' + itemId, {
+        method: 'DELETE',
     })
     .then(response => response.json())
-    .then(item => {getInventoryNoClick()})
+    .then(response => {getInventoryNoClick()})
 }
 
 const closeRecipe = (xButtonDiv, craftDiv) => {
