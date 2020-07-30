@@ -33,7 +33,7 @@
     padding: 0em;
     position: relative;
     display: inline-block;
-    background-image: url('/mod-3-final-project-frontend/images/invFrame.png');
+    background-image: url('images/invFrame.png');
 }
 
 .no-item {
@@ -46,7 +46,7 @@
     padding: 0em;
     position: relative;
     display: inline-block;
-    background-image: url('/mod-3-final-project-frontend/images/invFrame.png');
+    background-image: url('images/invFrame.png');
 }
 
 .inventory-div:after {
@@ -107,8 +107,8 @@ img#Matches {
 
 img#Gold {
     position: absolute;
-    bottom: 125px;
-    right: 300px;
+    bottom: 100px;
+    right: 210px;
 }
 
 img#Stick {
@@ -152,7 +152,7 @@ img#Rod {
 }
 
 .dropup-content p:hover {
-    background-color: red
+    background-color: aquamarine;
 }
 
 .item:hover .dropup-content {
@@ -169,8 +169,8 @@ img#Rod {
 
 .text-div {
     position: absolute;
-    bottom: 400px;
-    left: 475px;
+    bottom: 425px;
+    left: 425px;
     background-image: url('images/speech-bubble.png');
     height: 128px;
     width: 256px;
@@ -184,6 +184,11 @@ img#Rod {
 }
 
 [data-name='String'] {
+    width: 50px;
+    height: auto;
+}
+
+[data-name='Stick'] {
     width: 50px;
     height: auto;
 }

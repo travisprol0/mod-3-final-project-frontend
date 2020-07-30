@@ -56,6 +56,7 @@ const itemClickHandler = inventory => {
     const imgs = document.querySelectorAll('.game-div img') //img that are direct children of .game-div
     imgs.forEach(img => {
         img.addEventListener('click', (e) => {
+            if (img.className != 'character'){
             object = {inventory_id: inventory.id}
             console.log(e.target.getAttribute('data-id'))
             fetch(itemURL + '/' + e.target.getAttribute('data-id'), {
@@ -73,7 +74,7 @@ const itemClickHandler = inventory => {
                 //can't just render inventory with the same inventory object again, but don't want more event listeners for the same stuff
                 getInventoryNoClick()
                 pickupMessage(item)
-            })
+            })}
         })
     })
 }
