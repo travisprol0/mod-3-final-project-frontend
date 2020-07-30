@@ -158,7 +158,6 @@ const renderInventory = inventory => {
     invDiv = document.querySelector('.inventory-div')
     items = inventory.items
     advancedItems = inventory.advanced_items
-    console.log(inventory.advanced_items)
     itemsDivs = invDiv.children
     
     for (let i = 0; i < itemsDivs.length; i++) {
@@ -179,15 +178,18 @@ const renderInventory = inventory => {
         img.src = items[i].img_url
         img.id = items[i].id
         img.dataset.name = items[i].name
+        img.dataset.room = items[i].room_id
         itemsDivs[i].className = 'item'
         itemsDivs[i].appendChild(img);
     }
+    
     for (let i = 0; i < advancedItems.length; i++) {
         img = document.createElement('img')
         img.src = advancedItems[i].img_url
         img.id = advancedItems[i].id
         img.dataset.name = advancedItems[i].name
         itemsDivs[i].className = 'item'
+        img.dataset.room = advancedItems[i].room_id
         itemsDivs[i].appendChild(img);
     }
     invClickHandler(inventory)
@@ -394,10 +396,11 @@ const getAdvItems = (itemId, inventory, itemOne, itemTwo) => {
 }
 
 const removeFirstItemFromInventory = (itemOne, itemTwo, inventory) => {
-   
-    const itemOneId = (parseInt(itemOne.id, 0))
-    const itemOneObject = {inventory_id: inventory.id + 1,}
-   
+    
+    const itemOneId = (parseInt(itemOne.id, 10))
+    const itemOneRoomId = parseInt(itemOne.getAttribute('data-room'), 10)
+    const itemOneObject = {inventory_id: inventory.id + 1, room_id: itemOneRoomId + 3}
+    
     fetch(itemURL + '/' + itemOneId, {
         method: "PATCH",
         headers: {
@@ -412,7 +415,8 @@ const removeFirstItemFromInventory = (itemOne, itemTwo, inventory) => {
 
 const removeSecondItemFromInventory = (itemTwo, inventory) => {
     const itemTwoId = (parseInt(itemTwo.id, 0))
-    const itemTwoObject = {inventory_id: inventory.id + 1,}
+    const itemTwoRoomId = parseInt(itemTwo.getAttribute('data-room'), 10)
+    const itemTwoObject = {inventory_id: inventory.id + 1, room_id: itemTwoRoomId + 3}
 
     fetch(itemURL + '/' + itemTwoId, {
         method: "PATCH",
@@ -448,12 +452,13 @@ const recipeInventoryClick = (invItemOne, invItemTwo) => {
                 invItemOne.src = e.target.src
                 invItemOne.dataset.name = e.target.getAttribute('data-name')
                 invItemOne.id = e.target.id
-                console.log(e.target)
+                invItemOne.dataset.room = e.target.getAttribute('data-room')
             } else if (!invItemTwo.src) {
                 if (invItemOne.src != e.target.src) {
                     invItemTwo.src = e.target.src
                     invItemTwo.dataset.name = e.target.getAttribute('data-name')
                     invItemTwo.id = e.target.id
+                    invItemTwo.dataset.room = e.target.getAttribute('data-room')
                 }
             }
         })
