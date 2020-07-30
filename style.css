@@ -171,7 +171,7 @@ img#Rod {
     position: absolute;
     bottom: 400px;
     left: 475px;
-    background-image: url('/mod-3-final-project-frontend/images/speech-bubble.png');
+    background-image: url('images/speech-bubble.png');
     height: 128px;
     width: 256px;
 }
