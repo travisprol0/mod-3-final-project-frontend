@@ -202,3 +202,65 @@ img#Rod {
     margin-top: 20px;
     display: block;
 }
+
+.craft {
+    position: absolute;
+    left: 150px;
+    top: 100px;
+    height: 300px;
+    width: 500px;
+    background-color: white;
+    /* background-image: url('images/invFrame.png'); */
+    box-shadow: 5px 5px 3px grey;
+}
+
+.crafting {
+    height: 75px;
+    width: 75px;
+    background-color: black;
+}
+
+.name-div {
+    font-family: "Arial", Helvetica, sans-serif;
+    font-size: 40px;
+    width: 50%;
+    height: auto;
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#first {
+    position: absolute;
+    margin-top: 25px;
+    margin-left: 60px;
+}
+#second {
+    position: absolute;
+    margin-top: 25px;
+    margin-left: 207.5px;
+}
+
+#advancedItem {
+    position: absolute;
+    margin-top: 25px;
+    margin-left: 355px;
+}
+
+.plus-equals {
+    font-family: "Arial", Helvetica, sans-serif;
+    font-size: 60px;
+}
+
+#plus {
+    position: absolute;
+    margin-top: 35px;
+    margin-left: 155px;
+}
+
+#equals {
+    position: absolute;
+    margin-top: 35px;
+    margin-left: 302.5px;
+}

@@ -133,6 +133,9 @@ const invClickHandler = (inventory) => {
                         throwAwayMessage(item)
                     })
                     break;
+                case 'craft':
+                    getRecipe(e.target.id)
+                break;
             }
         })
     })
@@ -162,7 +165,7 @@ const renderInventory = inventory => {
                 itemsDivs[i].innerHTML = `
                 <div class="dropup-content">
                     <p class='menu' id=${items[i].id}>throw away</p>
-                    <p class='menu' id=${items[i].id}>combine</p>
+                    <p class='menu' id=${items[i].id}>craft</p>
                 </div>
             `;
         } else {
@@ -251,18 +254,67 @@ const renderChar = character => {
     gameDiv.append(img)
 }
 
-const getRecs = () => {
+const getRecipe = itemId => {
+    console.log(itemId)
     fetch(recURL)
     .then(response => response.json())
     .then(recipes => {
+        recipes.forEach(recipe => {
+            recipe.items.forEach(item => {
+                if (item.id == itemId){
+                    renderRecipe(recipe)
+                }
+            })
+        })
     })
+}
+
+const renderRecipe = recipe => {
+    const nameDiv = document.createElement('div')
+    nameDiv.className = 'name-div'
+    nameDiv.id = recipe.advanced_item.name
+    nameDiv.textContent = recipe.advanced_item.name
+    const div = document.querySelector('.game-div')
+    const craftDiv = document.createElement('div')
+    craftDiv.className = 'craft'
+    const firstIngDiv = document.createElement('div')
+    firstIngDiv.className = 'crafting'
+    firstIngDiv.id = 'first'
+    const secondIngDiv = document.createElement('div')
+    secondIngDiv.className = 'crafting'
+    secondIngDiv.id = 'second'
+    const advancedItemDiv = document.createElement('div')
+    advancedItemDiv.className = 'crafting'
+    advancedItemDiv.id = 'advancedItem'
+    const invItemOneDiv = document.createElement('div')
+    invItemOneDiv.className = 'crafting'
+    invItemOneDiv.id = 'one'
+    const invItemTwoDiv = document.createElement('div')
+    invItemTwoDiv.className = 'crafting'
+    invItemTwoDiv.id = 'two'
+    const createButtonDiv = document.createElement('div')
+    createButtonDiv.className = 'button'
+    const plusDiv = document.createElement('div')
+    plusDiv.className = 'plus-equals'
+    plusDiv.id = 'plus'
+    plusDiv.textContent = '+'
+    const equalsDiv = document.createElement('div')
+    equalsDiv.className = 'plus-equals'
+    equalsDiv.id = 'equals'
+    equalsDiv.textContent = '='
+    const xButtonDiv = document.createElement('div')
+    xButtonDiv.className = 'x-button'
+
+    craftDiv.append(nameDiv, firstIngDiv, secondIngDiv, advancedItemDiv, plusDiv, equalsDiv)
+        // , invItemOneDiv, invItemTwoDiv, createButtonDiv, xButtonDiv)
+    div.append(craftDiv)
+    console.log(craftDiv)
 }
 
 
 const main = () => {
     getRooms()
     getAdvItems()
-    getRecs()
 }
 
 
