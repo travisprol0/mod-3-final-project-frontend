@@ -58,7 +58,6 @@ const itemClickHandler = inventory => {
         img.addEventListener('click', (e) => {
             if (img.className != 'character'){
             object = {inventory_id: inventory.id}
-            console.log(e.target.getAttribute('data-id'))
             fetch(itemURL + '/' + e.target.getAttribute('data-id'), {
 
                 method: "PATCH",
@@ -134,7 +133,7 @@ const invClickHandler = (inventory) => {
                     })
                     break;
                 case 'craft':
-                    getRecipe(e.target.id)
+                    getRecipe(e.target.id, inventory)
                 break;
             }
         })
@@ -158,6 +157,7 @@ const renderRoomByID = (id) => {
 const renderInventory = inventory => {
     invDiv = document.querySelector('.inventory-div')
     items = inventory.items
+    advancedItems = inventory.advanced_items
     itemsDivs = invDiv.children
     
     for (let i = 0; i < itemsDivs.length; i++) {
@@ -178,7 +178,18 @@ const renderInventory = inventory => {
         img.src = items[i].img_url
         img.id = items[i].id
         img.dataset.name = items[i].name
+        img.dataset.room = items[i].room_id
         itemsDivs[i].className = 'item'
+        itemsDivs[i].appendChild(img);
+    }
+    
+    for (let i = 0; i < advancedItems.length; i++) {
+        img = document.createElement('img')
+        img.src = advancedItems[i].img_url
+        img.id = advancedItems[i].id
+        img.dataset.name = advancedItems[i].name
+        itemsDivs[i].className = 'item'
+        img.dataset.room = advancedItems[i].room_id
         itemsDivs[i].appendChild(img);
     }
     invClickHandler(inventory)
@@ -230,13 +241,6 @@ const renderRoom = room => {
     getChar()
 }
 
-const getAdvItems = () => {
-    fetch(advItmURL)
-    .then(response => response.json())
-    .then(advItms => {
-    })
-}
-
 const getChar = () => {
     fetch(charURL)
     .then(response => response.json())
@@ -256,15 +260,14 @@ const renderChar = character => {
     gameDiv.append(img)
 }
 
-const getRecipe = itemId => {
-    console.log(itemId)
+const getRecipe = (itemId, inventory) => {
     fetch(recURL)
     .then(response => response.json())
     .then(recipes => {
         recipes.forEach(recipe => {
             recipe.items.forEach(item => {
                 if (item.id == itemId){
-                    renderRecipe(recipe)
+                    renderRecipe(recipe, inventory)
                 }
             })
         })
@@ -281,7 +284,7 @@ const hideMenu = () => {
 }
 
 
-const renderRecipe = recipe => {
+const renderRecipe = (recipe, inventory) => {
     const div = document.querySelector('.game-div')
     const craftDiv = document.createElement('div')
     craftDiv.className = 'craft'
@@ -355,28 +358,78 @@ const renderRecipe = recipe => {
     craftDiv.append(xButtonDiv, nameDiv, firstIngDiv, secondIngDiv, advancedItemDiv, plusDiv, equalsDiv, invItemOneDiv, invItemTwoDiv, createButtonDiv)
     div.append(craftDiv)
 
-    craftClick(recipe, invItemOne, invItemTwo, createButtonDiv)
+    craftClick(recipe, invItemOne, invItemTwo, createButtonDiv, inventory)
     closeRecipe(xButtonDiv, craftDiv)
     hideMenu()
 }
 
-const craftClick = (recipe, invItemOne, invItemTwo, createButtonDiv) => {
+const craftClick = (recipe, invItemOne, invItemTwo, createButtonDiv, inventory) => {
     createButtonDiv.addEventListener('click', () =>{
-        craftIt(recipe, invItemOne, invItemTwo)
+        craftIt(recipe, invItemOne, invItemTwo, inventory)
     })
 }
 
-const craftIt = (recipe, itemOne, itemTwo) => {
+const craftIt = (recipe, itemOne, itemTwo, inventory) => {
     const one = recipe.items[0]
     const two = recipe.items[1]
 
     if (((itemOne.getAttribute('data-name') === one.name)||(itemOne.getAttribute('data-name') === two.name))&&((itemTwo.getAttribute('data-name') === one.name)||(itemTwo.getAttribute('data-name') === two.name))) {
-        console.log('yes')
+        const itemId = recipe.advanced_item.id
+        getAdvItems(itemId, inventory, itemOne, itemTwo)
         document.querySelector('.craft').remove()
         showMenu()
     } else {
         console.log('no')
     }
+}
+
+const getAdvItems = (itemId, inventory, itemOne, itemTwo) => {
+    const object = {inventory_id: inventory.id}
+    fetch(advItmURL + '/' + itemId, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(object)
+    })
+    .then(response => response.json())
+    .then(advItm => {removeFirstItemFromInventory(itemOne, itemTwo, inventory)})
+}
+
+const removeFirstItemFromInventory = (itemOne, itemTwo, inventory) => {
+    
+    const itemOneId = (parseInt(itemOne.id, 10))
+    const itemOneRoomId = parseInt(itemOne.getAttribute('data-room'), 10)
+    const itemOneObject = {inventory_id: inventory.id + 1, room_id: itemOneRoomId + 3}
+    
+    fetch(itemURL + '/' + itemOneId, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(itemOneObject)
+    })
+    .then(response => response.json())
+    .then(item => {removeSecondItemFromInventory(itemTwo, inventory)})
+}
+
+const removeSecondItemFromInventory = (itemTwo, inventory) => {
+    const itemTwoId = (parseInt(itemTwo.id, 0))
+    const itemTwoRoomId = parseInt(itemTwo.getAttribute('data-room'), 10)
+    const itemTwoObject = {inventory_id: inventory.id + 1, room_id: itemTwoRoomId + 3}
+
+    fetch(itemURL + '/' + itemTwoId, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(itemTwoObject)
+    })
+    .then(response => response.json())
+    .then(item => {getInventoryNoClick()})
 }
 
 const closeRecipe = (xButtonDiv, craftDiv) => {
@@ -400,10 +453,14 @@ const recipeInventoryClick = (invItemOne, invItemTwo) => {
             if (!invItemOne.src){
                 invItemOne.src = e.target.src
                 invItemOne.dataset.name = e.target.getAttribute('data-name')
+                invItemOne.id = e.target.id
+                invItemOne.dataset.room = e.target.getAttribute('data-room')
             } else if (!invItemTwo.src) {
                 if (invItemOne.src != e.target.src) {
                     invItemTwo.src = e.target.src
                     invItemTwo.dataset.name = e.target.getAttribute('data-name')
+                    invItemTwo.id = e.target.id
+                    invItemTwo.dataset.room = e.target.getAttribute('data-room')
                 }
             }
         })
@@ -427,6 +484,5 @@ const main = () => {
         getRooms()
     })
 }
-
 
 document.addEventListener('DOMContentLoaded', main)

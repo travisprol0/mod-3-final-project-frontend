@@ -377,3 +377,12 @@ img#Rod {
     background-color: dimgray;
     color: whitesmoke;
 }
+
+
+[data-name='Torch']{
+    position: absolute;
+    bottom: 100px;
+    right: 210px;
+}
+
+
