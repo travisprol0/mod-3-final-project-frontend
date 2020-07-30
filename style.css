@@ -379,10 +379,3 @@ img#Rod {
 }
 
 
-[data-name='Torch']{
-    position: absolute;
-    bottom: 100px;
-    right: 210px;
-}
-
-

@@ -155,10 +155,10 @@ const renderRoomByID = (id) => {
 }
 
 const renderInventory = inventory => {
-    invDiv = document.querySelector('.inventory-div')
-    items = inventory.items
-    advancedItems = inventory.advanced_items
-    itemsDivs = invDiv.children
+    const invDiv = document.querySelector('.inventory-div')
+    const items = inventory.items
+    const advancedItems = inventory.advanced_items
+    const itemsDivs = invDiv.children
     
     for (let i = 0; i < itemsDivs.length; i++) {
         if (items[i]){
@@ -173,25 +173,18 @@ const renderInventory = inventory => {
         }
     }
 
-    for (let i = 0; i < items.length; i++) {
+    const allItems = items.concat(advancedItems);
+
+    for (let i = 0; i< allItems.length; i++){
         img = document.createElement('img')
-        img.src = items[i].img_url
-        img.id = items[i].id
-        img.dataset.name = items[i].name
-        img.dataset.room = items[i].room_id
+        img.src = allItems[i].img_url
+        img.id = allItems[i].id
+        img.dataset.name = allItems[i].name
+        img.dataset.room = allItems[i].room_id
         itemsDivs[i].className = 'item'
         itemsDivs[i].appendChild(img);
     }
-    
-    for (let i = 0; i < advancedItems.length; i++) {
-        img = document.createElement('img')
-        img.src = advancedItems[i].img_url
-        img.id = advancedItems[i].id
-        img.dataset.name = advancedItems[i].name
-        itemsDivs[i].className = 'item'
-        img.dataset.room = advancedItems[i].room_id
-        itemsDivs[i].appendChild(img);
-    }
+
     invClickHandler(inventory)
 }
 
@@ -358,9 +351,18 @@ const renderRecipe = (recipe, inventory) => {
     craftDiv.append(xButtonDiv, nameDiv, firstIngDiv, secondIngDiv, advancedItemDiv, plusDiv, equalsDiv, invItemOneDiv, invItemTwoDiv, createButtonDiv)
     div.append(craftDiv)
 
+    removeItemFromCraft([invItemOne, invItemTwo])
     craftClick(recipe, invItemOne, invItemTwo, createButtonDiv, inventory)
     closeRecipe(xButtonDiv, craftDiv)
     hideMenu()
+}
+
+const removeItemFromCraft = (items) => {
+    items.forEach(item => {
+        item.addEventListener('click', () => {
+            item.remove()
+        })
+    })
 }
 
 const craftClick = (recipe, invItemOne, invItemTwo, createButtonDiv, inventory) => {
@@ -379,8 +381,35 @@ const craftIt = (recipe, itemOne, itemTwo, inventory) => {
         document.querySelector('.craft').remove()
         showMenu()
     } else {
-        console.log('no')
+        const crafting = document.querySelector('.craft')
+        crafting.style.visibility = 'hidden'
+        failMessage()
+        setTimeout(function(){crafting.style.visibility='visible'}, 2500)
     }
+}
+
+const failMessage = () => {
+    console.log('no')
+    const div = document.querySelector('.game-div')
+    const textDiv = document.createElement('div')
+    textDiv.className = 'text-div'
+    const p = document.createElement('p')
+    p.className = 'text'
+    const num = Math.floor(Math.random() * Math.floor(3))
+    switch (num) {
+        case 0:
+            p.textContent = `...That's not quite right`
+            break;
+        case 1:
+            p.textContent = `Try harder next time`
+            break;
+        case 2:
+            p.textContent = `You're bad and you should feel bad`
+            break;
+    }
+    textDiv.append(p)
+    div.append(textDiv)
+    setTimeout(function(){ p.remove(); textDiv.remove() }, 2500);
 }
 
 const getAdvItems = (itemId, inventory, itemOne, itemTwo) => {
