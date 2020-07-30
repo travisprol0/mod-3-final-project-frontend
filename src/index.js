@@ -360,7 +360,7 @@ const renderRecipe = (recipe, inventory) => {
 const removeItemFromCraft = (items) => {
     items.forEach(item => {
         item.addEventListener('click', () => {
-            item.remove()
+            item.src = ''
         })
     })
 }
