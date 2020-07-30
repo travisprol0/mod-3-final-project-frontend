@@ -185,6 +185,8 @@ const renderInventory = inventory => {
 }
 
 const getRooms = () => {
+    document.querySelector('.inventory-div').style.visibility = 'visible'
+    document.querySelector('.game-div span').style.visibility = "visible"
     fetch(roomURL)
     .then(response => response.json())
     .then(rooms => {
@@ -287,7 +289,7 @@ const renderRecipe = recipe => {
     const nameDiv = document.createElement('div')
     nameDiv.className = 'name-div'
     nameDiv.id = recipe.advanced_item.name
-    nameDiv.textContent = recipe.advanced_item.name
+    nameDiv.innerHTML = `<p>${recipe.advanced_item.name}</p>`
 
     const firstIngDiv = document.createElement('div')
     firstIngDiv.className = 'crafting'
@@ -408,10 +410,22 @@ const recipeInventoryClick = (invItemOne, invItemTwo) => {
     })
 }
 
-
 const main = () => {
-    getRooms()
-    getAdvItems()
+    document.querySelector('.inventory-div').style.visibility = 'hidden'
+    document.querySelector('.game-div span').style.visibility = "hidden"
+
+    const start = document.createElement('div')
+    start.className = 'start'
+    start.innerHTML = '<p><span>START</span></p>'
+
+    const div = document.querySelector('.game-div')
+    div.appendChild(start)
+    div.style.backgroundImage = "url('images/background.png')"
+
+    start.addEventListener('click', () => {
+        start.remove()
+        getRooms()
+    })
 }
 
 

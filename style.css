@@ -1,3 +1,29 @@
+.start {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    width: 100px;
+    height: 50px;
+
+    position: absolute;
+    top: 75%;
+    left: 50%;
+
+    margin: -25px 0 0 -50px;
+
+    box-shadow: 5px 5px 3px grey;
+    border: black thin;
+    border-style: solid;
+    background-color: darkcyan;
+}
+
+.start p {
+    text-align: center;
+    color: whitesmoke;
+}
+
+.start:hover {
+    background-color: darkslategrey;
+}
+
 .game-div {
     width: 800px;
     height: 600px;
@@ -26,26 +52,22 @@
 }
 
 .item {
-    height: 100px;
     float: left;
+    height: 100px;
     width: 133.3;
     margin: 0em;
     padding: 0em;
     position: relative;
-    display: inline-block;
     background-image: url('images/invFrame.png');
 }
 
 .no-item {
-    height: 100px;
     float: left;
-    width: 132.3;
-    border-right: thin;
-    border-style: none solid none none;
+    height: 100px;
+    width: 133.3;
     margin: 0em;
     padding: 0em;
     position: relative;
-    display: inline-block;
     background-image: url('images/invFrame.png');
 }
 
@@ -210,15 +232,16 @@ img#Rod {
     top: 75px;
     height: 350px;
     width: 500px;
-    background-color: white;
-    /* background-image: url('images/invFrame.png'); */
+    /* background-color: white; */
+    background-image: url('images/craftingDiv.png');
     box-shadow: 5px 5px 3px grey;
 }
 
 .crafting {
     height: 75px;
     width: 75px;
-    background-color: black;
+    /* background-color: black; */
+    background-image: url('images/craftBox.png');
 }
 
 .crafting img {
@@ -246,14 +269,22 @@ img#Rod {
 }
 
 .name-div {
-    font-family: "Arial", Helvetica, sans-serif;
-    font-size: 40px;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    color: darkslategrey;
+    font-size: 35px;
     width: 50%;
-    height: auto;
+    height: 56px;
     margin: 0 auto;
     position: relative;
     text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
     margin-top: 20px;
+    background-image: url('images/textBackground.png');
+}
+.name-div p {
+    transform: rotate(-5deg);
+    margin: 0em;
 }
 
 #first {
