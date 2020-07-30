@@ -133,6 +133,9 @@ const invClickHandler = (inventory) => {
                         throwAwayMessage(item)
                     })
                     break;
+                case 'craft':
+                    getRecipe(e.target.id)
+                break;
             }
         })
     })
@@ -162,7 +165,7 @@ const renderInventory = inventory => {
                 itemsDivs[i].innerHTML = `
                 <div class="dropup-content">
                     <p class='menu' id=${items[i].id}>throw away</p>
-                    <p class='menu' id=${items[i].id}>combine</p>
+                    <p class='menu' id=${items[i].id}>craft</p>
                 </div>
             `;
         } else {
@@ -251,10 +254,157 @@ const renderChar = character => {
     gameDiv.append(img)
 }
 
-const getRecs = () => {
+const getRecipe = itemId => {
+    console.log(itemId)
     fetch(recURL)
     .then(response => response.json())
     .then(recipes => {
+        recipes.forEach(recipe => {
+            recipe.items.forEach(item => {
+                if (item.id == itemId){
+                    renderRecipe(recipe)
+                }
+            })
+        })
+    })
+}
+
+const hideMenu = () => {
+    if (document.querySelector('.craft')) {
+        const content = document.querySelectorAll('.dropup-content')
+        content.forEach(menu => {
+            menu.style.visibility = 'hidden'
+        })
+    }
+}
+
+
+const renderRecipe = recipe => {
+    const div = document.querySelector('.game-div')
+    const craftDiv = document.createElement('div')
+    craftDiv.className = 'craft'
+
+    const nameDiv = document.createElement('div')
+    nameDiv.className = 'name-div'
+    nameDiv.id = recipe.advanced_item.name
+    nameDiv.textContent = recipe.advanced_item.name
+
+    const firstIngDiv = document.createElement('div')
+    firstIngDiv.className = 'crafting'
+    firstIngDiv.id = 'first'
+
+    const secondIngDiv = document.createElement('div')
+    secondIngDiv.className = 'crafting'
+    secondIngDiv.id = 'second'
+
+    const advancedItemDiv = document.createElement('div')
+    advancedItemDiv.className = 'crafting'
+    advancedItemDiv.id = 'advancedItem'
+
+    const invItemOneDiv = document.createElement('div')
+    invItemOneDiv.className = 'crafting'
+    invItemOneDiv.id = 'one'
+
+    const invItemTwoDiv = document.createElement('div')
+    invItemTwoDiv.className = 'crafting'
+    invItemTwoDiv.id = 'two'
+
+    const createButtonDiv = document.createElement('div')
+    createButtonDiv.className = 'button'
+    createButtonDiv.innerHTML = '<p><span>craft</span></p>'
+
+    const plusDiv = document.createElement('div')
+    plusDiv.className = 'plus-equals'
+    plusDiv.id = 'plus'
+    plusDiv.textContent = '+'
+
+    const equalsDiv = document.createElement('div')
+    equalsDiv.className = 'plus-equals'
+    equalsDiv.id = 'equals'
+    equalsDiv.textContent = '='
+
+    const xButtonDiv = document.createElement('div')
+    xButtonDiv.className = 'x-button'
+    xButtonDiv.innerHTML = '<p><span>X</span></p>'
+
+    const itemOne = document.createElement('img')
+    itemOne.src = recipe.items[0].img_url
+    itemOne.dataset.name = recipe.items[0].name
+    firstIngDiv.appendChild(itemOne)
+
+    const itemTwo = document.createElement('img')
+    itemTwo.src = recipe.items[1].img_url
+    itemTwo.dataset.name = recipe.items[1].name
+    secondIngDiv.appendChild(itemTwo)
+
+    const invItemOne = document.createElement('img')
+    const invItemTwo = document.createElement('img')
+
+    recipeInventoryClick(invItemOne, invItemTwo)
+
+    invItemOneDiv.appendChild(invItemOne)
+    invItemTwoDiv.appendChild(invItemTwo)
+
+    const advancedItem = document.createElement('img')
+    advancedItem.src = recipe.advanced_item.img_url
+    advancedItem.dataset.name = recipe.advanced_item.name
+    advancedItemDiv.appendChild(advancedItem)
+
+    craftDiv.append(xButtonDiv, nameDiv, firstIngDiv, secondIngDiv, advancedItemDiv, plusDiv, equalsDiv, invItemOneDiv, invItemTwoDiv, createButtonDiv)
+    div.append(craftDiv)
+
+    craftClick(recipe, invItemOne, invItemTwo, createButtonDiv)
+    closeRecipe(xButtonDiv, craftDiv)
+    hideMenu()
+}
+
+const craftClick = (recipe, invItemOne, invItemTwo, createButtonDiv) => {
+    createButtonDiv.addEventListener('click', () =>{
+        craftIt(recipe, invItemOne, invItemTwo)
+    })
+}
+
+const craftIt = (recipe, itemOne, itemTwo) => {
+    const one = recipe.items[0]
+    const two = recipe.items[1]
+
+    if (((itemOne.getAttribute('data-name') === one.name)||(itemOne.getAttribute('data-name') === two.name))&&((itemTwo.getAttribute('data-name') === one.name)||(itemTwo.getAttribute('data-name') === two.name))) {
+        console.log('yes')
+        document.querySelector('.craft').remove()
+        showMenu()
+    } else {
+        console.log('no')
+    }
+}
+
+const closeRecipe = (xButtonDiv, craftDiv) => {
+    xButtonDiv.addEventListener('click', () => {
+        craftDiv.remove();
+        showMenu();
+    })
+}
+
+const showMenu = () => {
+    const content = document.querySelectorAll('.dropup-content')
+    content.forEach(menu => {
+        menu.style.visibility = 'visible'
+    })
+}
+
+const recipeInventoryClick = (invItemOne, invItemTwo) => {
+    const inventoryItems = document.querySelectorAll('.item img')
+    inventoryItems.forEach(item => {
+        item.addEventListener('click', e => {
+            if (!invItemOne.src){
+                invItemOne.src = e.target.src
+                invItemOne.dataset.name = e.target.getAttribute('data-name')
+            } else if (!invItemTwo.src) {
+                if (invItemOne.src != e.target.src) {
+                    invItemTwo.src = e.target.src
+                    invItemTwo.dataset.name = e.target.getAttribute('data-name')
+                }
+            }
+        })
     })
 }
 
@@ -262,7 +412,6 @@ const getRecs = () => {
 const main = () => {
     getRooms()
     getAdvItems()
-    getRecs()
 }
 
 

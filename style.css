@@ -56,7 +56,7 @@
 }
 
 body {
-    background-color: antiquewhite;
+    background-color: aliceblue;
 }
 
 .arrow {
@@ -135,6 +135,7 @@ img#Rod {
 }
 
 .dropup-content {
+    font-family: "Arial", Helvetica, sans-serif;
     display: none;
     position: absolute;
     bottom: 100px;
@@ -201,4 +202,147 @@ img#Rod {
     margin-right: auto;
     margin-top: 20px;
     display: block;
+}
+
+.craft {
+    position: absolute;
+    left: 150px;
+    top: 75px;
+    height: 350px;
+    width: 500px;
+    background-color: white;
+    /* background-image: url('images/invFrame.png'); */
+    box-shadow: 5px 5px 3px grey;
+}
+
+.crafting {
+    height: 75px;
+    width: 75px;
+    background-color: black;
+}
+
+.crafting img {
+    height: auto;
+    max-width: 75px;
+    max-height: 75px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    display: block;
+}
+
+.crafting [data-name='String'] {
+    width: 50px;
+    height: auto;
+}
+
+.crafting [data-name='Stick'] {
+    width: 50px;
+    height: auto;
+}
+
+.crafting [data-name='Torch'] {
+    margin-top: 0px;
+}
+
+.name-div {
+    font-family: "Arial", Helvetica, sans-serif;
+    font-size: 40px;
+    width: 50%;
+    height: auto;
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+    margin-top: 20px;
+}
+
+#first {
+    position: absolute;
+    margin-top: 30px;
+    margin-left: 57.5px;
+}
+#second {
+    position: absolute;
+    margin-top: 30px;
+    margin-left: 207.5px;
+}
+
+#advancedItem {
+    position: absolute;
+    margin-top: 30px;
+    margin-left: 357.5px;
+}
+
+.plus-equals {
+    font-family: "Arial", Helvetica, sans-serif;
+    font-size: 60px;
+}
+
+#plus {
+    position: absolute;
+    margin-top: 40px;
+    margin-left: 155px;
+}
+
+#equals {
+    position: absolute;
+    margin-top: 40px;
+    margin-left: 302.5px;
+}
+
+#one {
+    position: absolute;
+    top: 185px;
+    left: 132.5px;
+}
+
+#two {
+    position: absolute;
+    top: 185px;
+    left: 282.5px;
+}
+
+.button {
+    width: 50%;
+    height: auto;
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+    margin-top: 225px;
+    font-family: "Arial", Helvetica, sans-serif;
+    font-size: 20px;
+}
+
+.button span {
+    border: black;
+    border-style: solid;
+    border-width: thin;
+    padding: 5px;
+    background-color: grey;
+    color: whitesmoke;
+}
+
+.button span:hover {
+    background-color: dimgray;
+    color: whitesmoke;
+}
+
+.x-button {
+    float: right;
+    margin-right: 10px;
+    font-family: "Arial", Helvetica, sans-serif;
+}
+
+.x-button span {
+    border: black;
+    border-style: solid;
+    border-width: thin;
+    padding: 5px;
+    background-color: grey;
+    color: whitesmoke;
+}
+
+.x-button span:hover {
+    background-color: dimgray;
+    color: whitesmoke;
 }
