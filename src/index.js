@@ -491,8 +491,14 @@ const craftClick = (recipe, createButtonDiv, inventory, one, two) => {
     })
 }
 
+const play = () => {
+
+}
 
 const main = () => {
+    const music = document.querySelector('audio')
+    console.log(music)
+    music.play()
     document.querySelector('.inventory-div').style.visibility = 'hidden'
     document.querySelector('.game-div span').style.visibility = "hidden"
 
