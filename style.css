@@ -336,10 +336,10 @@ img#Rod {
 .button {
     width: 50%;
     height: auto;
-    margin: 0 auto;
-    position: relative;
+    /* margin: 0 auto; */
+    position: absolute;
     text-align: center;
-    margin-top: 225px;
+    margin-top: 200px;
     font-family: "Arial", Helvetica, sans-serif;
     font-size: 20px;
 }
@@ -354,6 +354,31 @@ img#Rod {
 }
 
 .button span:hover {
+    background-color: dimgray;
+    color: whitesmoke;
+}
+.clear {
+    width: 50%;
+    height: auto;
+    /* margin: 0 auto; */
+    position: absolute;
+    text-align: center;
+    margin-top: 200px;
+    margin-left: 200px;
+    font-family: "Arial", Helvetica, sans-serif;
+    font-size: 20px;
+}
+
+.clear span {
+    border: black;
+    border-style: solid;
+    border-width: thin;
+    padding: 5px;
+    background-color: grey;
+    color: whitesmoke;
+}
+
+.clear span:hover {
     background-color: dimgray;
     color: whitesmoke;
 }
