@@ -6,6 +6,7 @@ const getItems = () => {
     fetch(itemURL)
     .then(response => response.json())
     .then(items => {
+        getChar()
         renderItems(items)
     })
 }
@@ -150,7 +151,7 @@ const renderRoomByID = (id) => {
                 renderRoom(rooms[i])
             }
         }
-        getChar()
+        
     })
 }
 
@@ -231,7 +232,6 @@ const renderRoom = room => {
     div.setAttribute('data-name', room.name)
     div.style.backgroundImage = `url('${room.img_url}')`
     getItems()
-    getChar()
 }
 
 const getChar = () => {
@@ -244,7 +244,6 @@ const getChar = () => {
 
 const renderChar = character => {
     const gameDiv = document.querySelector('.game-div')
-
     const img = document.createElement('img');
     img.src = character.img_url
     img.id = character.name
@@ -431,8 +430,6 @@ const deleteItems = (itemOne, itemTwo) => {
     items = {itemOne, itemTwo}
     const itemOneId = itemOne.firstChild.id
     const itemTwoId = itemTwo.firstChild.id
-    console.log(itemOne)
-    
     fetchDeleteItems(itemOneId)
     fetchDeleteItems(itemTwoId)
 }
@@ -496,9 +493,6 @@ const play = () => {
 }
 
 const main = () => {
-    const music = document.querySelector('audio')
-    console.log(music)
-    music.play()
     document.querySelector('.inventory-div').style.visibility = 'hidden'
     document.querySelector('.game-div span').style.visibility = "hidden"
 
@@ -509,6 +503,11 @@ const main = () => {
     const div = document.querySelector('.game-div')
     div.appendChild(start)
     div.style.backgroundImage = "url('images/background.png')"
+
+    document.addEventListener('click', () => {
+        const music = document.querySelector('audio')
+        music.play()
+    })
 
     start.addEventListener('click', () => {
         start.remove()
